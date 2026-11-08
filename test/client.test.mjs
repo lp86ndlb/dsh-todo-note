@@ -27,7 +27,7 @@ globalThis.window = {
 await import('../lib/client.js')
 
 const { exports } = captured
-const { resolveDrop, moveToIndex, moveBefore, mergedRows } = exports.internals
+const { resolveDrop, stablePreview, moveToIndex, moveBefore, mergedRows } = exports.internals
 
 test('the client module loads through the ModuleLoader envelope', () => {
   assert.equal(captured.id, 'dsh-todo-note')
@@ -57,6 +57,39 @@ test('resolveDrop is monotonic: a lower center never yields a lower slot', () =>
     previous = slot
   }
   assert.equal(previous, mids.length)
+})
+
+test('stablePreview holds the slot until the pointer is clearly past the edge', () => {
+  const mids = [100, 200, 300]
+  // Slot 1, drifting down across the 200 boundary: a hover must not move it.
+  assert.equal(stablePreview(1, mids, 205, 12), 1)
+  assert.equal(stablePreview(1, mids, 195, 12), 1)
+  // Committed only once it is a full margin past that boundary.
+  assert.equal(stablePreview(1, mids, 213, 12), 2)
+  // Same going back up.
+  assert.equal(stablePreview(2, mids, 195, 12), 2)
+  assert.equal(stablePreview(2, mids, 180, 12), 1)
+})
+
+test('stablePreview is a no-op with no margin, and sane at the ends', () => {
+  const mids = [100, 200, 300]
+  for (let center = -50; center <= 350; center += 7) {
+    assert.equal(stablePreview(1, mids, center, 0), resolveDrop(mids, center))
+  }
+  assert.equal(stablePreview(0, mids, 350, 12), 3, 'a long throw still lands')
+  assert.equal(stablePreview(3, mids, 250, 12), 2, 'the last slot can move up')
+  assert.equal(stablePreview(0, [], 42, 12), 0)
+})
+
+test('stablePreview keeps a jittering hand from flipping the slot', () => {
+  const mids = [100, 200, 300]
+  let slot = 1
+  const seen = []
+  for (const center of [200, 205, 197, 206, 194, 203, 198, 201]) {
+    slot = stablePreview(slot, mids, center, 12)
+    seen.push(slot)
+  }
+  assert.deepEqual(seen, [1, 1, 1, 1, 1, 1, 1, 1])
 })
 
 test('moveToIndex moves one row and clamps the target', () => {

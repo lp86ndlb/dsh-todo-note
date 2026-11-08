@@ -82,7 +82,7 @@ The screenshots below use fictional demo data.
 
 **Completion is yours to confirm**
 
-- After the agent calls `todo_note_complete`, the task becomes `awaiting` and an inline `Done? ✓ ✗` appears on the same line as the title.
+- After the agent calls `todo_note_complete`, the task becomes `awaiting` and a right-aligned `Done? ✓ ✗` row appears under the title. It sits on its own line, so the hover-only shelve/delete buttons can never cover it.
 - Only ✓ finishes it: strike, fade, then height collapse — played once.
 - ✗ returns it to active with a `rejects` count; the agent's next snapshot says "用户未通过" so it reflects before retrying.
 

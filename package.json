@@ -3,6 +3,14 @@
   "version": "0.1.2",
   "description": "A draggable to-do note on every session: short-term tasks, long-term plan progress, and a live prompt snapshot so the agent stops re-reading context.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lp86ndlb/dsh-todo-note.git"
+  },
+  "homepage": "https://github.com/lp86ndlb/dsh-todo-note#readme",
+  "bugs": {
+    "url": "https://github.com/lp86ndlb/dsh-todo-note/issues"
+  },
   "type": "module",
   "main": "lib/host.js",
   "exports": {

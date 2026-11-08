@@ -1,0 +1,53 @@
+{
+  "name": "dsh-todo-note",
+  "version": "0.1.0",
+  "description": "A draggable to-do note on every session: short-term tasks, long-term plan progress, and a live prompt snapshot so the agent stops re-reading context.",
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/host.js",
+  "exports": {
+    ".": "./lib/host.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json",
+    "./icon": "./icon.svg",
+    "./locale/*.json": "./locale/*.json"
+  },
+  "files": [
+    "lib",
+    "locale",
+    "docs",
+    "icon.svg",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20.11",
+    "dsh": ">=0.2.0-rc.2 <0.3.0"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "todo",
+    "plan",
+    "memory",
+    "sticky-note",
+    "productivity"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime",
+        "@deepseek-ai/dsh-cordis-client-runner",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-settings-plugins"
+      ]
+    }
+  }
+}

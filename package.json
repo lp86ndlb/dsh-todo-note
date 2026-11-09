@@ -1,6 +1,6 @@
 {
   "name": "dsh-todo-note",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A draggable to-do note on every session: short-term tasks, long-term plan progress, and a live prompt snapshot so the agent stops re-reading context.",
   "license": "MIT",
   "repository": {

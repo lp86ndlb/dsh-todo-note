@@ -123,7 +123,16 @@ dsh plugin --profile web add "$(pwd)"
 
 > `web` 是 Web 端与桌面端共用的 profile 名。不确定时先运行 `dsh plugin list` 查看。
 
-### 方式三：手动注册（不推荐）
+### 方式三：市场索引源（DSH 0.2.1+）
+
+仓库根目录的 `index.json` 是一份 format-1 市场索引。把它加进 **插件 → 发现 → 索引源**，就能像市场条目一样搜索、一键安装：
+
+- jsDelivr（快）：`https://cdn.jsdelivr.net/gh/lp86ndlb/dsh-todo-note@main/index.json`
+- GitHub Raw：`https://raw.githubusercontent.com/lp86ndlb/dsh-todo-note/main/index.json`
+
+索引指向 npm 上的发布版（`dsh-todo-note`），升级走 npm，不与本地克隆联动。收录进 awesome-dsh-plugin 主列表要过人工评审，这条是「立刻就能在界面里装」的捷径。
+
+### 方式四：手动注册（不推荐）
 
 自行在 profile 的 `package.json` 依赖中加入 `"dsh-todo-note": "link:/绝对/路径"`，并同步 `dsh.profile.bundles`。手写容易与插件管理器冲突，优先使用前两种方式。
 

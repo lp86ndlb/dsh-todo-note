@@ -123,7 +123,16 @@ dsh plugin --profile web add "$(pwd)"
 
 > `web` is the profile used by both the web UI and the desktop app. Run `dsh plugin list` if you are unsure.
 
-### Option 3: Manual registration (not recommended)
+### Option 3: Market index source (dsh 0.2.1+)
+
+`index.json` in the repository root is a format-1 market index. Add it under **Plugins → Discover → Index sources** and the plugin becomes searchable and one-click installable like a catalog entry:
+
+- jsDelivr (fast): `https://cdn.jsdelivr.net/gh/lp86ndlb/dsh-todo-note@main/index.json`
+- GitHub raw: `https://raw.githubusercontent.com/lp86ndlb/dsh-todo-note/main/index.json`
+
+The index points at the npm release (`dsh-todo-note`), so upgrades come from npm and a local clone is never tracked. The curated awesome-dsh-plugin listing still goes through review; this is the shortcut for installing from the UI right away.
+
+### Option 4: Manual registration (not recommended)
 
 Add `"dsh-todo-note": "link:/absolute/path"` to the profile dependencies and register the same name in `dsh.profile.bundles`. Hand edits tend to conflict with the plugin manager.
 

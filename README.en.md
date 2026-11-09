@@ -96,7 +96,7 @@ The screenshots below use fictional demo data.
 - Three shapes: note, floating ball, detail. Shape and position persist in `localStorage`.
 - Resizing expands toward the anchored quadrant and collapses back to the exact original rectangle.
 - Both the note and the detail view size to their content: the note caps at 420px and the detail at `min(82vh, 720px)`, so a short checklist does not sit in an oversized empty frame.
-- Drag the header to move, double-click to reset. The note and the detail view snap and glide in near an edge with a 16px margin; **the ball stays exactly where you drop it**. Motion follows the pointer 1:1 on the compositor (`transform`, so text never re-lays-out), with at most one 140 ms deceleration on release and no spring back.
+- Drag the header to move, double-click to reset. The note and the detail view snap and glide in near an edge with a 16px margin; **the ball stays exactly where you drop it**. Motion follows the pointer 1:1 on the compositor (`transform`, so text never re-lays-out), snapped to whole pixels; while dragging, the content leaves hit-testing so row highlights and the shelve/delete cluster cannot blink under the pointer. At most one 140 ms deceleration on release, no spring back.
 
 ## Install
 

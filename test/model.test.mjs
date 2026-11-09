@@ -7,10 +7,12 @@ import {
   applyAction,
   countsOf,
   emptyNote,
+  isLinked,
   normalizeStore,
   progressOf,
   pruneStore,
   readText,
+  renderLiveSection,
   renderSnapshot,
 } from '../lib/model.js'
 
@@ -231,4 +233,54 @@ test('move_task reorders the list, which is also the priority order', () => {
   assert.ok(demoted.version > promoted.version, 'a move is a real change')
 
   assert.throws(() => applyAction(note, { type: 'move_task', id: 'nope' }), /no task with id/)
+})
+
+
+test('a fresh session is unlinked, and the first write links it for good', () => {
+  const fresh = emptyNote()
+  assert.equal(fresh.linkedAt, 0)
+  assert.equal(isLinked(fresh), false, 'an untouched note is not linked')
+
+  const linked = applyAction(fresh, { type: 'set_focus', current: 'ship the release' }).note
+  assert.ok(linked.linkedAt > 0, 'writing focus marks the session linked')
+  assert.equal(isLinked(linked), true)
+
+  const cleared = applyAction(linked, { type: 'set_focus', current: '', next: '' }).note
+  assert.equal(cleared.linkedAt, linked.linkedAt, 'linkedAt is sticky: we never re-nag')
+  assert.equal(isLinked(cleared), true, 'an empty but once-linked note stays linked')
+})
+
+test('legacy notes with content count as linked even without linkedAt', () => {
+  const legacy = emptyNote()
+  legacy.focus.current = 'old note'
+  assert.equal(isLinked(legacy), true)
+
+  const withTasks = emptyNote()
+  withTasks.tasks.push({ id: 't_1', title: 'x', state: 'active' })
+  assert.equal(isLinked(withTasks), true)
+
+  const withPlan = emptyNote()
+  withPlan.plan.phases.push({ id: 'p_1', title: 'phase', status: 'todo', weight: 1 })
+  assert.equal(isLinked(withPlan), true)
+})
+
+test('linkedAt survives normalization', () => {
+  const note = applyAction(emptyNote(), { type: 'add_task', title: 'a' }).note
+  const store = normalizeStore({ schemaVersion: 1, sessions: { s1: JSON.parse(JSON.stringify(note)) } })
+  assert.equal(store.sessions.s1.linkedAt, note.linkedAt)
+  assert.equal(isLinked(store.sessions.s1), true)
+})
+
+
+test('the live prompt block nags exactly once: only while unlinked', () => {
+  const fresh = emptyNote()
+  const nudged = renderLiveSection(fresh)
+  assert.match(nudged, /还没有关联待办便签/, 'an unlinked session is told to link once')
+  assert.match(nudged, /只做这一次/)
+
+  const linked = applyAction(fresh, { type: 'set_focus', current: 'now' }).note
+  assert.doesNotMatch(renderLiveSection(linked), /还没有关联待办便签/, 'a linked session is never nagged again')
+  assert.match(renderLiveSection(linked), /现在：now/)
+
+  assert.doesNotMatch(renderLiveSection(fresh, { nudge: false }), /还没有关联待办便签/)
 })

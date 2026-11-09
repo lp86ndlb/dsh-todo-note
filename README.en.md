@@ -152,6 +152,17 @@ Remove the entry from `dsh.profile.bundles` as well. Uninstalling keeps your dat
 | `—` | Collapse to the floating ball |
 | `⤢` | Expand / collapse detail |
 
+### Session link state
+
+The note is per session, and the plugin deliberately leaves sessions that are not using it alone. Each session carries a hidden link state:
+
+| State | Panel | Agent side |
+| --- | --- | --- |
+| Not linked | A quiet dashed "Not linked" pill in the header | The next prompt gets a one-time reminder: look with `todo_note_read`, then write the now / next focus and 1–3 real tasks with `todo_note_update` |
+| Linked | Back to the "N items" count | Snapshot only, never a reminder again |
+
+Linking is sticky: once established it never regresses (clearing the tasks later will not re-arm the reminder). That is how "the plugin never attaches itself unless asked": exactly one nudge on first use, silence afterwards. If the user explicitly asks, the agent may still read and write any session's note at any time.
+
 ## Agent tools
 
 | Tool | Purpose |

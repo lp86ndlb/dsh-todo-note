@@ -95,7 +95,7 @@ The screenshots below use fictional demo data.
 
 - Three shapes: note, floating ball, detail. Shape and position persist in `localStorage`.
 - Resizing expands toward the anchored quadrant and collapses back to the exact original rectangle.
-- Drag the header to move, double-click to reset; edges snap with a 16px margin.
+- Drag the header to move, double-click to reset. The note and the detail view snap and glide in near an edge with a 16px margin; **the ball stays exactly where you drop it**. Motion follows the pointer 1:1, with at most one 140 ms deceleration on release and no spring back.
 
 ## Install
 
@@ -147,7 +147,7 @@ Remove the entry from `dsh.profile.bundles` as well. Uninstalling keeps your dat
 | Click elsewhere with an empty composer | Collapses; text you already typed is kept |
 | Hover a task row | "Shelve / delete" appear in the top-right corner |
 | Drag a task row | Live reorder; the dragged row follows the pointer and others make room. Dropping in place writes nothing |
-| Drag the header or the ball | Move the panel; snaps within 16px of an edge |
+| Drag the header or the ball | 1:1 follow; note/detail snap and glide within 44px of an edge, the ball does not snap |
 | Double-click the header | Reset to the top-right corner |
 | `—` | Collapse to the floating ball |
 | `⤢` | Expand / collapse detail |

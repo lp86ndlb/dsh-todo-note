@@ -161,6 +161,8 @@ The note is per session, and the plugin deliberately leaves sessions that are no
 | Not linked | A quiet dashed "Not linked" pill in the header | The next prompt gets a one-time reminder: look with `todo_note_read`, then write the now / next focus and 1–3 real tasks with `todo_note_update` |
 | Linked | Back to the "N items" count | Snapshot only, never a reminder again |
 
+The "Not linked" pill is itself a button: clicking it sends the agent one message asking it to link now, and the pill disappears once the note exists. It is a fallback — normally the agent links by itself on its next turn.
+
 Linking is sticky: once established it never regresses (clearing the tasks later will not re-arm the reminder). That is how "the plugin never attaches itself unless asked": exactly one nudge on first use, silence afterwards. If the user explicitly asks, the agent may still read and write any session's note at any time.
 
 ## Agent tools
